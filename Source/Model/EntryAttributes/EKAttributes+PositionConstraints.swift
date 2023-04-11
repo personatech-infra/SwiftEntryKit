@@ -145,7 +145,11 @@ public extension EKAttributes {
             
             /** The screen autorotates with accordance to this option */
             public var supportedInterfaceOrientations = SupportedInterfaceOrientation.standard
-            
+         
+            /** To be set same as presenting controller orientaion and used in case of isEnabled = false
+                in supportedInterfaceOrientations get property of ViewController*/
+            public var customSupportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
+         
             public init() {}
         }
         

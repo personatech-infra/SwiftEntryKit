@@ -19,7 +19,15 @@ class EKRootViewController: UIViewController {
     
     private unowned let delegate: EntryPresenterDelegate
     
-    private var lastAttributes: EKAttributes!
+    private var lastAttributes: EKAttributes! {
+      didSet {
+        if #available(iOS 16.0, *) {
+          UIView.performWithoutAnimation {
+            setNeedsUpdateOfSupportedInterfaceOrientations()
+          }
+        }
+      }
+    }
     
     private let backgroundView = EKBackgroundView()
 
@@ -60,6 +68,9 @@ class EKRootViewController: UIViewController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         guard let lastAttributes = lastAttributes else {
             return super.supportedInterfaceOrientations
+        }
+        if !lastAttributes.positionConstraints.rotation.isEnabled {
+           return lastAttributes.positionConstraints.rotation.customSupportedInterfaceOrientations
         }
         switch lastAttributes.positionConstraints.rotation.supportedInterfaceOrientations {
         case .standard:
